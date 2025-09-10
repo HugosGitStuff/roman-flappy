@@ -56,7 +56,7 @@ class Player(GameObject):
     def __init__(self, x: float, y: float, config: Dict):
         super().__init__(x, y, config['width'], config['height'])
         self.velocity = 0
-        self.gravity = config['gravity'] 
+        self.gravity = config['gravity']
         self.flap_strength = config['flap_strength']
         self.max_velocity = config['max_velocity']
 
@@ -442,11 +442,22 @@ class FlappyBird:
         y_offset = self.height * 2 // 3  # Start position for instructions
         for instruction in instructions:
             if instruction == "How to Play:":
-                # Make the header bold by drawing it twice with slight offset
-                text = font_medium.render(instruction, True, (255, 215, 0))  # Gold color
+                # Make the header stand out with a different color and bold effect
+                header_color = (220, 20, 60)  # Crimson red - more visible
+                # Draw the text twice with slight offset for bold effect
+                text = font_medium.render(instruction, True, header_color)
                 text_rect = text.get_rect(center=(self.width // 2, y_offset))
+                # Draw shadow/outline
+                shadow_offset = 2
+                shadow_text = font_medium.render(instruction, True, (0, 0, 0))  # Black shadow
+                shadow_rect = text_rect.copy()
+                shadow_rect.x -= shadow_offset
+                shadow_rect.y -= shadow_offset
+                self.screen.blit(shadow_text, shadow_rect)
+                # Draw main text
                 self.screen.blit(text, text_rect)
             else:
+                # Instructions in bright white
                 text = font_medium.render(instruction, True, (255, 255, 255))
                 text_rect = text.get_rect(center=(self.width // 2, y_offset))
                 self.screen.blit(text, text_rect)
